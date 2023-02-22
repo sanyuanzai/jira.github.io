@@ -1,6 +1,17 @@
 import React, { memo } from "react";
-
-const List = memo(({ list, users }) => {
+import { User } from "./search-panel";
+interface ListType {
+  id: string;
+  name: string;
+  personId: string;
+  organization: string;
+  created: string;
+}
+interface propsListType {
+  list: ListType[];
+  users: User[];
+}
+const List = memo(({ list, users }: propsListType) => {
   return (
     <table>
       <thead>

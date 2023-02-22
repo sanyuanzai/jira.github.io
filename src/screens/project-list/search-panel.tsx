@@ -1,6 +1,15 @@
 import React, { memo } from "react";
-
-const SearchPanel = memo(({ param, setParam, users }) => {
+export interface User {
+  name: string;
+  id: string;
+  token: string;
+}
+interface propsSearchPanelType {
+  param: { name: string; personId: string };
+  setParam: (param: propsSearchPanelType["param"]) => void;
+  users: User[];
+}
+const SearchPanel = memo(({ param, setParam, users }: propsSearchPanelType) => {
   return (
     <form>
       <div>
