@@ -4,7 +4,6 @@ import RegisterScreen from "./register";
 
 export const UnauthenticatedApp = () => {
   const [isRigister, setIsRegter] = useState(false);
-  console.log(isRigister);
   return (
     <div>
       {isRigister ? <RegisterScreen /> : <LoginScreen />}

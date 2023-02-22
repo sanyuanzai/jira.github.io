@@ -1,7 +1,7 @@
 import { useAuth } from "context/auth-context";
 import React, { memo, FormEvent } from "react";
 const RegisterScreen = memo(() => {
-  const { register, user } = useAuth();
+  const { register } = useAuth();
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -13,7 +13,6 @@ const RegisterScreen = memo(() => {
   };
   return (
     <form onSubmit={handleSubmit}>
-      {user ? `注册成功,用户名:${user.name}` : null}
       <div>
         <label htmlFor="uesername">用户名</label>
       </div>

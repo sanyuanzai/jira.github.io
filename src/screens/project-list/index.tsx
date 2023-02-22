@@ -2,33 +2,22 @@ import React, { memo, useEffect, useState } from "react";
 import cleanObject, { useDebounce, useMount } from "utils";
 import List from "./list";
 import SearchPanel from "./search-panel";
-import * as qs from "qs";
-
-const apiUrl = process.env.REACT_APP_API_URL;
+import { useHttp } from "utils/http";
 const ProjectListScreen = memo(() => {
   const [param, setParam] = useState({
     name: "",
     personId: "",
   });
-  const debounce = useDebounce(param, 800);
+  const debounceParam = useDebounce(param, 800);
   const [list, setList] = useState([]);
   const [users, setUsers] = useState([]);
-  console.log(param);
+  const client = useHttp();
   useEffect(() => {
-    fetch(`${apiUrl}/projects?${qs.stringify(cleanObject(debounce))}`).then(
-      async (res) => {
-        if (res.ok) {
-          setList(await res.json());
-        }
-      }
-    );
-  }, [debounce]);
+    client("projects", { data: cleanObject(debounceParam) }).then(setList);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debounceParam]);
   useMount(() => {
-    fetch(`${apiUrl}/users`).then(async (res) => {
-      if (res.ok) {
-        setUsers(await res.json());
-      }
-    });
+    client("users").then(setUsers);
   });
   return (
     <div>
