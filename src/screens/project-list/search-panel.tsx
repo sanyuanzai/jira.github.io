@@ -1,4 +1,5 @@
-import { Input, Select } from "antd";
+/* @jsxImportSource @emotion/react */
+import { Form, Input, Select } from "antd";
 import React, { memo } from "react";
 export interface User {
   name: string;
@@ -12,11 +13,12 @@ interface propsSearchPanelType {
 }
 const SearchPanel = memo(({ param, setParam, users }: propsSearchPanelType) => {
   return (
-    <form>
-      <div>
+    <Form css={{ marginBottom: "2em" }} layout="inline">
+      <Form.Item>
         <Input
           type="text"
           value={param.name}
+          placeholder="项目名"
           onChange={(event) =>
             setParam({
               ...param,
@@ -24,6 +26,8 @@ const SearchPanel = memo(({ param, setParam, users }: propsSearchPanelType) => {
             })
           }
         />
+      </Form.Item>
+      <Form.Item>
         <Select
           value={param.personId}
           onChange={(value) => setParam({ ...param, personId: value })}
@@ -35,8 +39,8 @@ const SearchPanel = memo(({ param, setParam, users }: propsSearchPanelType) => {
             </Select.Option>
           ))}
         </Select>
-      </div>
-    </form>
+      </Form.Item>
+    </Form>
   );
 });
 
