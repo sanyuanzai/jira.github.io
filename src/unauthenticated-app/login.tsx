@@ -2,11 +2,19 @@ import { useAuth } from "context/auth-context";
 import { memo } from "react";
 import { Button, Form, Input } from "antd";
 import styled from "@emotion/styled";
-const LoginScreen = memo(() => {
+import { useAsync } from "utils/use-async";
+const LoginScreen = memo(({ onError }: { onError: (error: Error) => void }) => {
   const { login, user } = useAuth();
-
-  const handleSubmit = (values: { username: string; password: string }) => {
-    login(values);
+  const { isLoadding, run } = useAsync(undefined, { throwOnError: true });
+  const handleSubmit = async (values: {
+    username: string;
+    password: string;
+  }) => {
+    try {
+      await run(login(values));
+    } catch (error: any) {
+      onError(error);
+    }
   };
   return (
     <Form onFinish={handleSubmit}>
@@ -24,7 +32,7 @@ const LoginScreen = memo(() => {
         <Input placeholder={"密码"} type="password" id={"password"} />
       </Form.Item>
       <Form.Item>
-        <LongButton htmlType={"submit"} type={"primary"}>
+        <LongButton loading={isLoadding} htmlType={"submit"} type={"primary"}>
           登录
         </LongButton>
       </Form.Item>

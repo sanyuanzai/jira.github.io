@@ -1,9 +1,9 @@
 import styled from "@emotion/styled";
-import { Table } from "antd";
+import { Table, TableProps } from "antd";
 import dayjs from "dayjs";
 import React, { memo } from "react";
 import { User } from "./search-panel";
-interface ListType {
+export interface ListType {
   id: string;
   name: string;
   personId: string;
@@ -11,11 +11,10 @@ interface ListType {
   created: string;
   pin: Boolean;
 }
-interface propsListType {
-  list: ListType[];
+interface propsListType extends TableProps<ListType> {
   users: User[];
 }
-const List = memo(({ list, users }: propsListType) => {
+const List = memo(({ users, ...props }: propsListType) => {
   return (
     <Container>
       <Table
@@ -55,7 +54,7 @@ const List = memo(({ list, users }: propsListType) => {
             },
           },
         ]}
-        dataSource={list}
+        {...props}
       ></Table>
     </Container>
   );

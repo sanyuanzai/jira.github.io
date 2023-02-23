@@ -1,30 +1,27 @@
-import React, { memo, useEffect, useState } from "react";
-import cleanObject, { useDebounce, useMount } from "utils";
+import React, { memo, useState } from "react";
+import { useDebounce } from "utils";
 import List from "./list";
 import SearchPanel from "./search-panel";
-import { useHttp } from "utils/http";
 import styled from "@emotion/styled";
+import { Typography } from "antd";
+import { useProject } from "utils/project";
+import useUser from "utils/user";
 const ProjectListScreen = memo(() => {
   const [param, setParam] = useState({
     name: "",
     personId: "",
   });
   const debounceParam = useDebounce(param, 800);
-  const [list, setList] = useState([]);
-  const [users, setUsers] = useState([]);
-  const client = useHttp();
-  useEffect(() => {
-    client("projects", { data: cleanObject(debounceParam) }).then(setList);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debounceParam]);
-  useMount(() => {
-    client("users").then(setUsers);
-  });
+  const { isLoadding, isError, data: list, error } = useProject(debounceParam);
+  const { data: users } = useUser();
   return (
     <Container>
       <h1>项目列表</h1>
-      <SearchPanel users={users} param={param} setParam={setParam} />
-      <List users={users} list={list} />
+      <SearchPanel users={users || []} param={param} setParam={setParam} />
+      {isError ? (
+        <Typography.Text type="danger">{error?.message}</Typography.Text>
+      ) : null}
+      <List users={users || []} dataSource={list || []} loading={isLoadding} />
     </Container>
   );
 });

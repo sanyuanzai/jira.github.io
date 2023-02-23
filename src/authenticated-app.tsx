@@ -10,11 +10,7 @@ export const AuthenticatedApp = () => {
   const items: MenuProps["items"] = [
     {
       key: "1",
-      label: (
-        <a href="" onClick={logout}>
-          登出
-        </a>
-      ),
+      label: <h3 onClick={logout}>登出</h3>,
     },
   ];
   return (
