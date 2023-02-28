@@ -1,17 +1,22 @@
 /* @jsxImportSource @emotion/react */
 import { Form, Input, Select } from "antd";
+import UserSelect from "components/user-select";
 import React, { memo } from "react";
+import { ListType } from "./list";
 export interface User {
   name: string;
-  id: string;
+  id: number;
+  email: string;
+  title: string;
+  organization: string;
   token: string;
 }
 interface propsSearchPanelType {
-  param: { name: string; personId: string };
+  param: Partial<Pick<ListType, "name" | "personId">>;
   setParam: (param: propsSearchPanelType["param"]) => void;
   users: User[];
 }
-const SearchPanel = memo(({ param, setParam, users }: propsSearchPanelType) => {
+const SearchPanel = ({ param, setParam, users }: propsSearchPanelType) => {
   return (
     <Form css={{ marginBottom: "2em" }} layout="inline">
       <Form.Item>
@@ -28,20 +33,14 @@ const SearchPanel = memo(({ param, setParam, users }: propsSearchPanelType) => {
         />
       </Form.Item>
       <Form.Item>
-        <Select
+        <UserSelect
+          defaultOptionName={"负责人"}
           value={param.personId}
           onChange={(value) => setParam({ ...param, personId: value })}
-        >
-          <Select.Option value="">负责人</Select.Option>
-          {users.map((user) => (
-            <Select.Option key={user.id} value={String(user.id)}>
-              {user.name}
-            </Select.Option>
-          ))}
-        </Select>
+        />
       </Form.Item>
     </Form>
   );
-});
+};
 
 export default SearchPanel;

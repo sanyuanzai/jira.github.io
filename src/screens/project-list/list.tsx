@@ -5,9 +5,9 @@ import React, { memo } from "react";
 import { Link } from "react-router-dom";
 import { User } from "./search-panel";
 export interface ListType {
-  id: string;
+  id: number;
   name: string;
-  personId: string;
+  personId: number;
   organization: string;
   created: string;
   pin: Boolean;
