@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export const isFalsy = (value:unknown) => (value === 0 ? false : !value);
 export const isVoid = (value:unknown) => value === '' || value === undefined ||value === null
@@ -18,7 +18,7 @@ export const useMount = (callback:()=>void) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 };
-export const useDebounce = function (value:any, delay?:number) {
+export const useDebounce = function <V>(value:V, delay?:number) {
   const [desboucedValue, setDesbounceValue] = useState(value);
   useEffect(() => {
     const timeout = setTimeout(() => setDesbounceValue(value), delay);
@@ -26,3 +26,19 @@ export const useDebounce = function (value:any, delay?:number) {
   }, [value,delay]);
   return desboucedValue;
 };
+
+export const useDocumentTitle = (title:string,keepOnUnmount:boolean = true) => {
+  const oldTitle = useRef(document.title).current
+  useEffect(()=>{
+    document.title = title
+  },[title])
+  useEffect(()=>{
+    return ()=>{
+      if(!keepOnUnmount){
+        document.title = oldTitle
+      }
+    }
+  },[oldTitle,keepOnUnmount])
+}
+
+export const resetRoute = ()=> window.location.href = window.location.origin
