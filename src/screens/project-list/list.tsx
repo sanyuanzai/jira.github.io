@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
-import { Table, TableProps } from "antd";
+import { Dropdown, MenuProps, Table, TableProps } from "antd";
+import { NoPaddingButton } from "components/lib";
 import { Pin } from "components/pin";
 import dayjs from "dayjs";
 import React, { memo } from "react";
@@ -70,6 +71,25 @@ const List = memo(({ users, ...props }: propsListType) => {
                     ? dayjs(project.created).format("YYYY-MM-DD")
                     : "无"}
                 </span>
+              );
+            },
+          },
+          {
+            render(value, project) {
+              const items: MenuProps["items"] = [
+                {
+                  key: "1",
+                  label: <NoPaddingButton type="link">编辑</NoPaddingButton>,
+                },
+                {
+                  key: "2",
+                  label: <NoPaddingButton type="link">删除</NoPaddingButton>,
+                },
+              ];
+              return (
+                <Dropdown menu={{ items }}>
+                  <NoPaddingButton type="link">...</NoPaddingButton>
+                </Dropdown>
               );
             },
           },

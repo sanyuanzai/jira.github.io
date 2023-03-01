@@ -6,7 +6,7 @@ import { useAsync } from "./use-async";
 
  
 
- export const useProject = (param:Partial<ListType>) =>{
+ export const useProject = (param?:Partial<ListType>) =>{
     const {run,...result} = useAsync<ListType[]>()
     const client = useHttp()
     const fetchProject = useCallback(()=>client("projects", { data: cleanObject(param) }),[client,param])

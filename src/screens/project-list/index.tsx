@@ -1,4 +1,3 @@
-import React, { memo } from "react";
 import { useDebounce, useDocumentTitle } from "utils";
 import List from "./list";
 import SearchPanel from "./search-panel";
