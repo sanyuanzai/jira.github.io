@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useMountedRef } from "utils"
 
 interface State<D>{
     error: null|Error
@@ -34,6 +35,7 @@ export const useAsync = <D>(initialState?:State<D>,initialConfig?:typeof default
         error
     })
     const [retry,setRetry] = useState(()=>()=>{})
+    const mountedRef = useMountedRef()
     const run = (promise:Promise<D>,runConfig?:{retry:()=>Promise<D>})=>{
         if(!promise||!promise.then){
             throw new Error('请传入 Promise 类型数据')
@@ -45,6 +47,7 @@ export const useAsync = <D>(initialState?:State<D>,initialConfig?:typeof default
         })
         setState({...state,status:'loadding'})
         return promise.then(data=> {
+            if(mountedRef.current)
             setData(data)
             return data
         }).catch(error=> {
