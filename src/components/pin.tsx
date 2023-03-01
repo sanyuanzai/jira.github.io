@@ -1,7 +1,6 @@
 import React from "react";
 import { Rate } from "antd";
 
-type RateType = React.Component;
 interface PinProps extends React.ComponentProps<typeof Rate> {
   checked: Boolean;
   onCheckedChange?: (checked: boolean) => void;

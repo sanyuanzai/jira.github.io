@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import { useMountedRef } from "utils"
 
 interface State<D>{
@@ -24,19 +24,19 @@ export const useAsync = <D>(initialState?:State<D>,initialConfig?:typeof default
         ...defaultInitialState,
         ...initialState
     })
-    const setData = (data:D) => setState({
+    const setData = useCallback((data:D) => setState({
         data,
         status:'success',
         error:null
-    })
-    const setError = (error:Error) => setState({
+    }),[])
+    const setError = useCallback((error:Error) => setState({
         data:null,
         status:'error',
         error
-    })
+    }),[])
     const [retry,setRetry] = useState(()=>()=>{})
     const mountedRef = useMountedRef()
-    const run = (promise:Promise<D>,runConfig?:{retry:()=>Promise<D>})=>{
+    const run = useCallback((promise:Promise<D>,runConfig?:{retry:()=>Promise<D>})=>{
         if(!promise||!promise.then){
             throw new Error('请传入 Promise 类型数据')
         }
@@ -45,16 +45,16 @@ export const useAsync = <D>(initialState?:State<D>,initialConfig?:typeof default
                 run(runConfig.retry(),runConfig)
             }
         })
-        setState({...state,status:'loadding'})
+        setState(prevState=>({...prevState,status:'loadding'}))
         return promise.then(data=> {
             if(mountedRef.current)
             setData(data)
             return data
         }).catch(error=> {
             setError(error)
-            if(config)return Promise.reject(error)
+            if(config.throwOnError)return Promise.reject(error)
             return error})
-    }
+    },[config.throwOnError, mountedRef, setData,setError])
     
     return {
         isIdle: state.status === 'idle',
