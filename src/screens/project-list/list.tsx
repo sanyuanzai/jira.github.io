@@ -7,6 +7,7 @@ import React, { memo } from "react";
 import { Link } from "react-router-dom";
 import { useEditProject } from "utils/project";
 import { User } from "./search-panel";
+import { useProjectModal } from "./util";
 export interface ListType {
   id: number;
   name: string;
@@ -21,6 +22,7 @@ interface propsListType extends TableProps<ListType> {
 }
 const List = memo(({ users, ...props }: propsListType) => {
   const { mutate } = useEditProject();
+  const { open: openModal } = useProjectModal();
   const pinProject = (id: number) => (pin: boolean) =>
     mutate({ id, pin }).then(props.refresh);
   return (
@@ -78,11 +80,15 @@ const List = memo(({ users, ...props }: propsListType) => {
             render(value, project) {
               const items: MenuProps["items"] = [
                 {
-                  key: "1",
-                  label: <NoPaddingButton type="link">编辑</NoPaddingButton>,
+                  key: "edit",
+                  label: (
+                    <NoPaddingButton type="link" onClick={openModal}>
+                      编辑
+                    </NoPaddingButton>
+                  ),
                 },
                 {
-                  key: "2",
+                  key: "delete",
                   label: <NoPaddingButton type="link">删除</NoPaddingButton>,
                 },
               ];

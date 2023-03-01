@@ -5,10 +5,12 @@ import styled from "@emotion/styled";
 import { Typography } from "antd";
 import { useProject } from "utils/project";
 import useUser from "utils/user";
-import { useProjectSearchParam } from "./util";
+import { useProjectModal, useProjectSearchParam } from "./util";
+import { NoPaddingButton, Row } from "components/lib";
 const ProjectListScreen = () => {
   useDocumentTitle("项目列表", false);
 
+  const { open: openModal } = useProjectModal();
   const [param, setParam] = useProjectSearchParam();
   const {
     isLoadding,
@@ -19,7 +21,12 @@ const ProjectListScreen = () => {
   const { data: users } = useUser();
   return (
     <Container>
-      <h1>项目列表</h1>
+      <Row bettween={true}>
+        <h1>项目列表</h1>
+        <NoPaddingButton type="link" onClick={openModal}>
+          创建项目
+        </NoPaddingButton>
+      </Row>
       <SearchPanel users={users || []} param={param} setParam={setParam} />
       {error ? (
         <Typography.Text type="danger">{error?.message}</Typography.Text>

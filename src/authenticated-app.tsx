@@ -6,33 +6,26 @@ import { Button, Dropdown, MenuProps, Space } from "antd";
 import { useRoutes } from "react-router-dom";
 import { resetRoute } from "utils";
 import routes from "router";
-import { useState } from "react";
 import ProjectModal from "screens/project-list/project-modal";
 import ProjectPopover from "components/project-popover";
 
 export const AuthenticatedApp = () => {
-  const [projectModalOpen, setProjectModalOpen] = useState(false);
   return (
     <Container>
-      <PageHeader setProjectModalOpen={setProjectModalOpen} />
+      <PageHeader />
       <Main>{useRoutes(routes)}</Main>
-      <ProjectModal
-        projectModalOpen={projectModalOpen}
-        onClose={() => setProjectModalOpen(false)}
-      />
+      <ProjectModal />
     </Container>
   );
 };
-const PageHeader = (props: {
-  setProjectModalOpen: (isOpen: boolean) => void;
-}) => {
+const PageHeader = () => {
   return (
     <Header bettween={true}>
       <HeaderLeft gap={true}>
         <NoPaddingButton type="link" onClick={resetRoute}>
           <SoftwareLogo width={"18rem"} color={"rgb(38,132,255)"} />
         </NoPaddingButton>
-        <ProjectPopover onOpen={() => props.setProjectModalOpen(true)} />
+        <ProjectPopover />
         <h2>组员</h2>
       </HeaderLeft>
       <HeaderRight>
