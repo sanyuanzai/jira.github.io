@@ -33,10 +33,16 @@ export const useAsync = <D>(initialState?:State<D>,initialConfig?:typeof default
         status:'error',
         error
     })
-    const run = (promise:Promise<D>)=>{
+    const [retry,setRetry] = useState(()=>()=>{})
+    const run = (promise:Promise<D>,runConfig?:{retry:()=>Promise<D>})=>{
         if(!promise||!promise.then){
             throw new Error('请传入 Promise 类型数据')
         }
+        setRetry(()=>()=>{
+            if(runConfig?.retry){
+                run(runConfig.retry(),runConfig)
+            }
+        })
         setState({...state,status:'loadding'})
         return promise.then(data=> {
             setData(data)
@@ -46,11 +52,13 @@ export const useAsync = <D>(initialState?:State<D>,initialConfig?:typeof default
             if(config)return Promise.reject(error)
             return error})
     }
+    
     return {
         isIdle: state.status === 'idle',
         isLoadding:state.status ==='loadding',
         isError: state.status === 'error',
         isSuccess:state.status === 'success',
+        retry,
         run,
         setData,
         setError,

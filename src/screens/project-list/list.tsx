@@ -1,8 +1,10 @@
 import styled from "@emotion/styled";
 import { Table, TableProps } from "antd";
+import { Pin } from "components/pin";
 import dayjs from "dayjs";
 import React, { memo } from "react";
 import { Link } from "react-router-dom";
+import { useEditProject } from "utils/project";
 import { User } from "./search-panel";
 export interface ListType {
   id: number;
@@ -10,17 +12,32 @@ export interface ListType {
   personId: number;
   organization: string;
   created: string;
-  pin: Boolean;
+  pin: boolean;
 }
 interface propsListType extends TableProps<ListType> {
   users: User[];
+  refresh?: () => void;
 }
 const List = memo(({ users, ...props }: propsListType) => {
+  const { mutate } = useEditProject();
+  const pinProject = (id: number) => (pin: boolean) =>
+    mutate({ id, pin }).then(props.refresh);
   return (
     <Container>
       <Table
         pagination={false}
         columns={[
+          {
+            title: <Pin checked={true} disabled={true} />,
+            render(value, project) {
+              return (
+                <Pin
+                  checked={project.pin}
+                  onCheckedChange={pinProject(project.id)}
+                />
+              );
+            },
+          },
           {
             title: "名称",
             sorter: (a, b) => a.name.localeCompare(b.name),

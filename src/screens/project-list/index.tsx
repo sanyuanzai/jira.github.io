@@ -11,7 +11,12 @@ const ProjectListScreen = () => {
   useDocumentTitle("项目列表", false);
 
   const [param, setParam] = useProjectSearchParam();
-  const { isLoadding, data: list, error } = useProject(useDebounce(param, 500));
+  const {
+    isLoadding,
+    data: list,
+    error,
+    retry,
+  } = useProject(useDebounce(param, 500));
   const { data: users } = useUser();
   return (
     <Container>
@@ -20,7 +25,12 @@ const ProjectListScreen = () => {
       {error ? (
         <Typography.Text type="danger">{error?.message}</Typography.Text>
       ) : null}
-      <List users={users || []} dataSource={list || []} loading={isLoadding} />
+      <List
+        users={users || []}
+        dataSource={list || []}
+        loading={isLoadding}
+        refresh={retry}
+      />
     </Container>
   );
 };
