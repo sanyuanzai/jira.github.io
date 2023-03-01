@@ -6,23 +6,22 @@ import styled from "@emotion/styled";
 import logo from "assets/logo.svg";
 import left from "assets/left.svg";
 import right from "assets/right.svg";
+import { ErrorBox } from "components/lib";
 
 export const UnauthenticatedApp = () => {
   const [isRigister, setIsRegter] = useState(false);
-  const [onError, setOnError] = useState<null | Error>(null);
+  const [error, setError] = useState<null | Error>(null);
   return (
     <Container>
       <Header />
       <Background />
       <ShadowCard>
         <Title>{isRigister ? "请注册" : "请登录"}</Title>
-        {onError ? (
-          <Typography.Text type="danger">{onError.message}</Typography.Text>
-        ) : null}
+        <ErrorBox error={error} />
         {isRigister ? (
-          <RegisterScreen onError={setOnError} />
+          <RegisterScreen onError={setError} />
         ) : (
-          <LoginScreen onError={setOnError} />
+          <LoginScreen onError={setError} />
         )}
         <Divider />
         <a onClick={() => setIsRegter(!isRigister)}>

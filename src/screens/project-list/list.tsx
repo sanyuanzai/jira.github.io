@@ -18,13 +18,11 @@ export interface ListType {
 }
 interface propsListType extends TableProps<ListType> {
   users: User[];
-  refresh?: () => void;
 }
 const List = memo(({ users, ...props }: propsListType) => {
   const { mutate } = useEditProject();
-  const { open: openModal } = useProjectModal();
-  const pinProject = (id: number) => (pin: boolean) =>
-    mutate({ id, pin }).then(props.refresh);
+  const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin });
+  const { startEdit } = useProjectModal();
   return (
     <Container>
       <Table
@@ -82,7 +80,10 @@ const List = memo(({ users, ...props }: propsListType) => {
                 {
                   key: "edit",
                   label: (
-                    <NoPaddingButton type="link" onClick={openModal}>
+                    <NoPaddingButton
+                      type="link"
+                      onClick={() => startEdit(project.id)}
+                    >
                       编辑
                     </NoPaddingButton>
                   ),

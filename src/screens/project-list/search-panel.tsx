@@ -1,7 +1,7 @@
 /* @jsxImportSource @emotion/react */
-import { Form, Input, Select } from "antd";
+import { Form, Input } from "antd";
 import UserSelect from "components/user-select";
-import React, { memo } from "react";
+
 import { ListType } from "./list";
 export interface User {
   name: string;
