@@ -6,9 +6,12 @@ import { Typography } from "antd";
 import { useProject } from "utils/project";
 import useUser from "utils/user";
 import { useProjectSearchParam } from "./util";
+import { NoPaddingButton, Row } from "components/lib";
+import { useAppDispatch } from "utils/usestore";
+import { openProjectModal } from "./project-list.slice";
 const ProjectListScreen = () => {
   useDocumentTitle("项目列表", false);
-
+  const dispatch = useAppDispatch();
   const [param, setParam] = useProjectSearchParam();
   const {
     isLoadding,
@@ -19,7 +22,15 @@ const ProjectListScreen = () => {
   const { data: users } = useUser();
   return (
     <Container>
-      <h1>项目列表</h1>
+      <Row bettween={true}>
+        <h1>项目列表</h1>
+        <NoPaddingButton
+          type="link"
+          onClick={() => dispatch(openProjectModal())}
+        >
+          创建项目
+        </NoPaddingButton>
+      </Row>
       <SearchPanel users={users || []} param={param} setParam={setParam} />
       {error ? (
         <Typography.Text type="danger">{error?.message}</Typography.Text>

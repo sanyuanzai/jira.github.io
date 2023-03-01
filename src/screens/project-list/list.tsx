@@ -1,11 +1,13 @@
 import styled from "@emotion/styled";
-import { Dropdown, MenuProps, Table, TableProps } from "antd";
+import { Dropdown, MenuProps, Space, Table, TableProps } from "antd";
 import { NoPaddingButton } from "components/lib";
 import { Pin } from "components/pin";
 import dayjs from "dayjs";
-import React, { memo } from "react";
+import { memo } from "react";
 import { Link } from "react-router-dom";
 import { useEditProject } from "utils/project";
+import { useAppDispatch } from "utils/usestore";
+import { openProjectModal } from "./project-list.slice";
 import { User } from "./search-panel";
 export interface ListType {
   id: number;
@@ -20,6 +22,7 @@ interface propsListType extends TableProps<ListType> {
   refresh?: () => void;
 }
 const List = memo(({ users, ...props }: propsListType) => {
+  const dispatch = useAppDispatch();
   const { mutate } = useEditProject();
   const pinProject = (id: number) => (pin: boolean) =>
     mutate({ id, pin }).then(props.refresh);
@@ -78,17 +81,33 @@ const List = memo(({ users, ...props }: propsListType) => {
             render(value, project) {
               const items: MenuProps["items"] = [
                 {
-                  key: "1",
-                  label: <NoPaddingButton type="link">编辑</NoPaddingButton>,
+                  key: "edit",
+                  label: (
+                    <NoPaddingButton
+                      type="link"
+                      onClick={() => dispatch(openProjectModal())}
+                    >
+                      编辑
+                    </NoPaddingButton>
+                  ),
                 },
                 {
-                  key: "2",
+                  key: "delete",
                   label: <NoPaddingButton type="link">删除</NoPaddingButton>,
                 },
               ];
               return (
                 <Dropdown menu={{ items }}>
-                  <NoPaddingButton type="link">...</NoPaddingButton>
+                  <Space>
+                    <NoPaddingButton
+                      type={"link"}
+                      onClick={(e) => e.preventDefault()}
+                    >
+                      <Space>
+                        <NoPaddingButton type="link">...</NoPaddingButton>
+                      </Space>
+                    </NoPaddingButton>
+                  </Space>
                 </Dropdown>
               );
             },

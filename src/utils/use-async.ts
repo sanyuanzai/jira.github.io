@@ -1,70 +1,97 @@
-import { useCallback, useState } from "react"
-import { useMountedRef } from "utils"
+import { useCallback, useReducer, useState } from "react";
+import { useMountedRef } from "utils";
 
-interface State<D>{
-    error: null|Error
-    data: D|null
-    status: 'idle' | 'loadding' | 'error' | 'success'
+interface State<D> {
+  error: null | Error;
+  data: D | null;
+  status: "idle" | "loadding" | "error" | "success";
 }
 
-const defaultInitialState:State<null> = {
-    error:null,
-    data: null,
-    status:'idle'
-}
+const defaultInitialState: State<null> = {
+  error: null,
+  data: null,
+  status: "idle",
+};
 const defaultConfig = {
-    throwOnError:false
-}
-export const useAsync = <D>(initialState?:State<D>,initialConfig?:typeof defaultConfig) => {
-    const config = {
-        ...defaultConfig,
-        ...initialConfig
+  throwOnError: false,
+};
+const useSafeDispatch = <T>(dispatch: (...args: T[]) => void) => {
+  const mountedRef = useMountedRef();
+  return useCallback(
+    (...args: T[]) => (mountedRef.current ? dispatch(...args) : void 0),
+    [dispatch, mountedRef]
+  );
+};
+
+export const useAsync = <D>(
+  initialState?: State<D>,
+  initialConfig?: typeof defaultConfig
+) => {
+  const config = {
+    ...defaultConfig,
+    ...initialConfig,
+  };
+  const [state, dispatch] = useReducer(
+    (state: State<D>, action: Partial<State<D>>) => ({ ...state, ...action }),
+    {
+      ...defaultInitialState,
+      ...initialState,
     }
-    const [state,setState] = useState<State<D>>({
-        ...defaultInitialState,
-        ...initialState
-    })
-    const setData = useCallback((data:D) => setState({
+  );
+  const safeDispatch = useSafeDispatch(dispatch);
+  const setData = useCallback(
+    (data: D) =>
+      safeDispatch({
         data,
-        status:'success',
-        error:null
-    }),[])
-    const setError = useCallback((error:Error) => setState({
-        data:null,
-        status:'error',
-        error
-    }),[])
-    const [retry,setRetry] = useState(()=>()=>{})
-    const mountedRef = useMountedRef()
-    const run = useCallback((promise:Promise<D>,runConfig?:{retry:()=>Promise<D>})=>{
-        if(!promise||!promise.then){
-            throw new Error('请传入 Promise 类型数据')
+        status: "success",
+        error: null,
+      }),
+    [safeDispatch]
+  );
+  const setError = useCallback(
+    (error: Error) =>
+      safeDispatch({
+        data: null,
+        status: "error",
+        error,
+      }),
+    [safeDispatch]
+  );
+  const [retry, setRetry] = useState(() => () => {});
+  const run = useCallback(
+    (promise: Promise<D>, runConfig?: { retry: () => Promise<D> }) => {
+      if (!promise || !promise.then) {
+        throw new Error("请传入 Promise 类型数据");
+      }
+      setRetry(() => () => {
+        if (runConfig?.retry) {
+          run(runConfig.retry(), runConfig);
         }
-        setRetry(()=>()=>{
-            if(runConfig?.retry){
-                run(runConfig.retry(),runConfig)
-            }
+      });
+      safeDispatch({ status: "loadding" });
+      return promise
+        .then((data) => {
+          setData(data);
+          return data;
         })
-        setState(prevState=>({...prevState,status:'loadding'}))
-        return promise.then(data=> {
-            if(mountedRef.current)
-            setData(data)
-            return data
-        }).catch(error=> {
-            setError(error)
-            if(config.throwOnError)return Promise.reject(error)
-            return error})
-    },[config.throwOnError, mountedRef, setData,setError])
-    
-    return {
-        isIdle: state.status === 'idle',
-        isLoadding:state.status ==='loadding',
-        isError: state.status === 'error',
-        isSuccess:state.status === 'success',
-        retry,
-        run,
-        setData,
-        setError,
-        ...state
-    }
-}
+        .catch((error) => {
+          setError(error);
+          if (config.throwOnError) return Promise.reject(error);
+          return error;
+        });
+    },
+    [config.throwOnError, setData, setError, safeDispatch]
+  );
+
+  return {
+    isIdle: state.status === "idle",
+    isLoadding: state.status === "loadding",
+    isError: state.status === "error",
+    isSuccess: state.status === "success",
+    retry,
+    run,
+    setData,
+    setError,
+    ...state,
+  };
+};
