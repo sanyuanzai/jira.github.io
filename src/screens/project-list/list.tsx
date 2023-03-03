@@ -6,16 +6,9 @@ import dayjs from "dayjs";
 import React, { memo } from "react";
 import { Link } from "react-router-dom";
 import { useDeleteProject, useEditProject } from "utils/project";
-import { User } from "./search-panel";
+import { ListType } from "../../types/ListType";
+import { User } from "../../types/User";
 import { useProjectModal, useProjectsQueryKey } from "./util";
-export interface ListType {
-  id: number;
-  name: string;
-  personId: number;
-  organization: string;
-  created: string;
-  pin: boolean;
-}
 interface propsListType extends TableProps<ListType> {
   users: User[];
 }

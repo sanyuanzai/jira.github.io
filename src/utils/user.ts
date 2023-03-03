@@ -1,16 +1,15 @@
 import { useEffect } from "react";
-import { User } from "screens/project-list/search-panel";
+import { User } from "types/User";
 import cleanObject from "utils";
 import { useHttp } from "./http";
 import { useAsync } from "./use-async";
 
-
-export default function useUser(param?:Partial<User>) {
+export default function useUser(param?: Partial<User>) {
   const client = useHttp();
-  const {run,...result} = useAsync<User[]>()
+  const { run, ...result } = useAsync<User[]>();
   useEffect(() => {
-    run(client("users", { data: cleanObject(param || {}) }))
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[param]);
-  return result
+    run(client("users", { data: cleanObject(param || {}) }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [param]);
+  return result;
 }

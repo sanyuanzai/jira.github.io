@@ -5,7 +5,7 @@ const KanbanScreen = React.lazy(() => import("screens/kanban"));
 const routes = [
   {
     path: "",
-    element: <Navigate to={"kanban"} />,
+    element: <Navigate to={"kanban"} replace={true} />,
   },
   {
     path: "kanban",

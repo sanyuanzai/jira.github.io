@@ -1,5 +1,5 @@
 import { Card, Divider, Typography } from "antd";
-import { useState } from "react";
+import React, { useState } from "react";
 import LoginScreen from "./login";
 import RegisterScreen from "./register";
 import styled from "@emotion/styled";
@@ -11,6 +11,7 @@ import { ErrorBox } from "components/lib";
 export const UnauthenticatedApp = () => {
   const [isRigister, setIsRegter] = useState(false);
   const [error, setError] = useState<null | Error>(null);
+  console.log(error);
   return (
     <Container>
       <Header />

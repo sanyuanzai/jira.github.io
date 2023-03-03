@@ -10,6 +10,10 @@ import { useProjectModal, useProjectsQueryKey } from "./util";
 export default function ProjectModal() {
   const { close, projectModalOpen, isLoading, editingProject } =
     useProjectModal();
+  const closeModal = () => {
+    form.resetFields();
+    close();
+  };
   const useMutateProject = editingProject ? useEditProject : useAddProject;
   const {
     mutateAsync,
@@ -19,8 +23,7 @@ export default function ProjectModal() {
   const [form] = useForm();
   const onFinish = (values: any) => {
     mutateAsync({ ...editingProject, ...values }).then(() => {
-      form.resetFields();
-      close();
+      closeModal();
     });
   };
   const title = editingProject ? "编辑项目" : "创建项目";
@@ -30,7 +33,7 @@ export default function ProjectModal() {
   return (
     <Drawer
       width={"100%"}
-      onClose={close}
+      onClose={closeModal}
       open={projectModalOpen}
       forceRender={true}
     >

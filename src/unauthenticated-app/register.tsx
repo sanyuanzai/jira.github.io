@@ -1,5 +1,5 @@
 import { useAuth } from "context/auth-context";
-import { memo } from "react";
+import React, { memo } from "react";
 import { Form, Input } from "antd";
 import { LongButton } from "./login";
 import { useAsync } from "utils/use-async";
@@ -21,6 +21,7 @@ const LoginScreen = memo(({ onError }: { onError: (error: Error) => void }) => {
     try {
       await run(register(values));
     } catch (error: any) {
+      console.log(error);
       onError(error);
     }
   };
@@ -42,7 +43,7 @@ const LoginScreen = memo(({ onError }: { onError: (error: Error) => void }) => {
         name="cpassword"
         rules={[{ required: true, message: "请确认密码" }]}
       >
-        <Input placeholder="确认密码" type="cpassword" id={"cpassword"} />
+        <Input placeholder="确认密码" type="password" id={"cpassword"} />
       </Form.Item>
       <Form.Item>
         <LongButton loading={isLoadding} htmlType={"submit"} type={"primary"}>

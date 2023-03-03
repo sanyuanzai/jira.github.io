@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { Button, Spin, Typography } from "antd";
 import { DevTools } from "jira-dev-tool";
+import React from "react";
 export const Row = styled.div<{
   gap?: Number | Boolean;
   bettween?: Boolean;
@@ -45,7 +46,7 @@ export const FullPageLoading = () => {
 };
 //类型守卫
 const isError = (value: any): value is Error => value?.message;
-export const ErrorBox = (error: { error: unknown }) => {
+export const ErrorBox = ({ error }: { error: unknown }) => {
   if (isError(error)) {
     return <Typography.Text type="danger">{error?.message}</Typography.Text>;
   }
