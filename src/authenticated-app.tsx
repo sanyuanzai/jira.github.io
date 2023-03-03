@@ -1,3 +1,4 @@
+import React from "react";
 import { useAuth } from "context/auth-context";
 import styled from "@emotion/styled";
 import { NoPaddingButton, Row } from "components/lib";
@@ -68,4 +69,5 @@ const HeaderLeft = styled(Row)``;
 const HeaderRight = styled.div``;
 const Main = styled.main`
   height: calc(100vh - 6rem);
+  display: flex;
 `;
