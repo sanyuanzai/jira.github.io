@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
 export const isVoid = (value: unknown) =>
   value === "" || value === undefined || value === null;
-export default function cleanObject(object?: { [key: string]: unknown }) {
+export default function cleanObject(object: { [key: string]: unknown }) {
   const result = { ...object };
   Object.keys(result).forEach((key) => {
     const value = result[key];
