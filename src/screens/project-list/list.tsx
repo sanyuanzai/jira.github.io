@@ -1,13 +1,13 @@
 import styled from "@emotion/styled";
-import { Dropdown, MenuProps, Table, TableProps } from "antd";
+import { Dropdown, MenuProps, Modal, Table, TableProps } from "antd";
 import { NoPaddingButton } from "components/lib";
 import { Pin } from "components/pin";
 import dayjs from "dayjs";
 import React, { memo } from "react";
 import { Link } from "react-router-dom";
-import { useEditProject } from "utils/project";
+import { useDeleteProject, useEditProject } from "utils/project";
 import { User } from "./search-panel";
-import { useProjectModal } from "./util";
+import { useProjectModal, useProjectsQueryKey } from "./util";
 export interface ListType {
   id: number;
   name: string;
@@ -20,9 +20,8 @@ interface propsListType extends TableProps<ListType> {
   users: User[];
 }
 const List = memo(({ users, ...props }: propsListType) => {
-  const { mutate } = useEditProject();
+  const { mutate } = useEditProject(useProjectsQueryKey());
   const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin });
-  const { startEdit } = useProjectModal();
   return (
     <Container>
       <Table
@@ -76,28 +75,7 @@ const List = memo(({ users, ...props }: propsListType) => {
           },
           {
             render(value, project) {
-              const items: MenuProps["items"] = [
-                {
-                  key: "edit",
-                  label: (
-                    <NoPaddingButton
-                      type="link"
-                      onClick={() => startEdit(project.id)}
-                    >
-                      编辑
-                    </NoPaddingButton>
-                  ),
-                },
-                {
-                  key: "delete",
-                  label: <NoPaddingButton type="link">删除</NoPaddingButton>,
-                },
-              ];
-              return (
-                <Dropdown menu={{ items }}>
-                  <NoPaddingButton type="link">...</NoPaddingButton>
-                </Dropdown>
-              );
+              return <More project={project} />;
             },
           },
         ]}
@@ -106,6 +84,47 @@ const List = memo(({ users, ...props }: propsListType) => {
     </Container>
   );
 });
+const More = ({ project }: { project: ListType }) => {
+  const { startEdit } = useProjectModal();
+  const { mutate: deleteProject } = useDeleteProject(useProjectsQueryKey());
+  const confirmDeleteProject = (id: number) => {
+    Modal.confirm({
+      title: "确定删除项目吗?",
+      content: "点击确定删除",
+      okText: "确定",
+      onOk() {
+        deleteProject({ id });
+      },
+    });
+  };
+  const items: MenuProps["items"] = [
+    {
+      key: "edit",
+      label: (
+        <NoPaddingButton type="link" onClick={() => startEdit(project.id)}>
+          编辑
+        </NoPaddingButton>
+      ),
+    },
+    {
+      key: "delete",
+      label: (
+        <NoPaddingButton
+          type="link"
+          onClick={() => confirmDeleteProject(project.id)}
+        >
+          删除
+        </NoPaddingButton>
+      ),
+    },
+  ];
+  return (
+    <Dropdown menu={{ items }}>
+      <NoPaddingButton type="link">...</NoPaddingButton>
+    </Dropdown>
+  );
+};
+
 const Container = styled.div``;
 
 export default List;
