@@ -18,7 +18,7 @@ export default function SearchPanel() {
     });
   };
   return (
-    <Row gap={true}>
+    <Row gap={true} style={{ marginBottom: "3.6rem" }}>
       <Input
         style={{ width: "20rem" }}
         placeholder={"任务名"}

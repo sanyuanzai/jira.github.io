@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
 import { Menu } from "antd";
-import { ScreenContainer } from "components/lib";
 import React, { memo } from "react";
 import { Link, useLocation, useRoutes } from "react-router-dom";
 import routes from "router/project";

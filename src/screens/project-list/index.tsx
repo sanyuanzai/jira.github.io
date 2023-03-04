@@ -1,4 +1,5 @@
 import { useDebounce, useDocumentTitle } from "utils";
+import React from "react";
 import List from "./list";
 import SearchPanel from "./search-panel";
 import styled from "@emotion/styled";
@@ -30,5 +31,6 @@ const ProjectListScreen = () => {
 ProjectListScreen.whyDidYouRender = true;
 const Container = styled.div`
   padding: 3.2rem;
+  flex: 1;
 `;
 export default ProjectListScreen;
