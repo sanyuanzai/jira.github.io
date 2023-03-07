@@ -11,7 +11,6 @@ import { ErrorBox } from "components/lib";
 export const UnauthenticatedApp = () => {
   const [isRigister, setIsRegter] = useState(false);
   const [error, setError] = useState<null | Error>(null);
-  console.log(error);
   return (
     <Container>
       <Header />

@@ -12,6 +12,7 @@
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.12",
     "@types/react": "^18.0.28",
+    "@types/react-beautiful-dnd": "^13.1.3",
     "@types/react-dom": "^18.0.11",
     "antd": "^5.2.2",
     "craco-less": "^2.0.0",
@@ -19,6 +20,7 @@
     "jira-dev-tool": "^1.6.59",
     "qs": "^6.11.0",
     "react": "^18.2.0",
+    "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.8.2",
@@ -32,7 +34,8 @@
     "test": "craco test",
     "eject": "craco eject",
     "prepare": "husky install",
-    "json-server": "json-server --watch __json_server_mock__/db.json --middlewares __json_server_mock__/middleware.js --port 3004"
+    "json-server": "json-server --watch __json_server_mock__/db.json --middlewares __json_server_mock__/middleware.js --port 3004",
+    "prettier": "prettier --write ."
   },
   "eslintConfig": {
     "extends": [

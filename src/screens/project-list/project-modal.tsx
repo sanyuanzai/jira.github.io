@@ -5,6 +5,7 @@ import { ErrorBox, Row } from "components/lib";
 import UserSelect from "components/user-select";
 import { useEffect } from "react";
 import { useAddProject, useEditProject } from "utils/project";
+import React from "react";
 import { useProjectModal, useProjectsQueryKey } from "./util";
 
 export default function ProjectModal() {

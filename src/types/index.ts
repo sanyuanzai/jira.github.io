@@ -1,1 +1,1 @@
-export type Raw = number | string
+export type Raw = number | string;

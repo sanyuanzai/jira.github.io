@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import React from "react";
 import { AuthProvider } from "./auth-context";
 import { QueryClient, QueryClientProvider } from "react-query";
 
