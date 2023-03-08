@@ -5,7 +5,7 @@ import { useHttp } from "./http";
 import {
   useAddConfig,
   useDeleteConfig,
-  useEditConfig,
+  useReorderKanbanConfig,
 } from "./use-optimistic-optins";
 
 export const useKanbans = (param?: Partial<Kanban>) => {
@@ -28,4 +28,19 @@ export const useDeleteKanban = (queryKey: QueryKey) => {
     ({ id }: { id: number }) => client(`kanbans/${id}`, { method: "DELETE" }),
     useDeleteConfig(queryKey)
   );
+};
+
+export interface SortProps {
+  fromId: number;
+  referenceId: number;
+  type: "before" | "after";
+  fromKanbanId?: number;
+  toKanbanId?: number;
+}
+
+export const useReorderKanban = (queryKey: QueryKey) => {
+  const client = useHttp();
+  return useMutation((params: SortProps) => {
+    return client("kanbans/reorder", { data: params, method: "POST" });
+  }, useReorderKanbanConfig(queryKey));
 };

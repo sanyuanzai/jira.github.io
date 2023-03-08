@@ -1,5 +1,4 @@
 import React, { ReactNode } from "react";
-import { PropsWithChildren } from "react";
 import {
   Droppable,
   DroppableProps,
@@ -32,10 +31,12 @@ type DropChildProps = Partial<{
 }> &
   React.HTMLAttributes<HTMLDivElement>;
 export const DropChild = React.forwardRef<HTMLDivElement, DropChildProps>(
-  ({children,...props}, ref) => <div ref={ref} style={{flex:1}}>
-    {children}
-    {props.provided?.placeholder}
-  </div>
+  ({ children, ...props }, ref) => (
+    <div ref={ref} style={{ flex: 1, minHeight: "5px" }}>
+      {children}
+      {props.provided?.placeholder}
+    </div>
+  )
 );
 
 type DragProps = Omit<DraggableProps, "children"> & { children: ReactNode };

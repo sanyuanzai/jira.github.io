@@ -26,34 +26,41 @@ export const CloumnCard = React.forwardRef(({ task }: { task: Task }) => {
       <TaskTypeIcon id={task.typeId} />
     </Card>
   );
-})
+});
 
-export const KanbanColumn = React.forwardRef<HTMLDivElement,{ kanban: Kanban }>(({ kanban,...props } ,ref) =>{
+export const KanbanColumn = React.forwardRef<
+  HTMLDivElement,
+  { kanban: Kanban }
+>(({ kanban, ...props }, ref) => {
   const { data: allTasks } = useTasks(useTaskSearchParams());
   const tasks = allTasks?.filter((task) => task.kanbanId === kanban.id);
   return (
     <Container ref={ref} {...props}>
       <Row bettween={true}>
         <h2>{kanban.name}</h2>
-        <DeleteKanban kanbanId={kanban.id} key={kanban.id}/>
+        <DeleteKanban kanbanId={kanban.id} key={kanban.id} />
       </Row>
       <TaskContainer>
-        <Drop type={'ROW'} direction={'vertical'} droppableId={"task"+kanban.id}>
+        <Drop
+          type={"ROW"}
+          direction={"vertical"}
+          droppableId={String(kanban.id)}
+        >
           <DropChild>
-            {tasks?.map((task,index) => (
-            <Drag key={task.id} index={index} draggableId={'task'+task.id}>
-              <div>
-                <CloumnCard task={task} key={task.id}/>
-              </div>
+            {tasks?.map((task, index) => (
+              <Drag key={task.id} index={index} draggableId={"task" + task.id}>
+                <div>
+                  <CloumnCard task={task} key={task.id} />
+                </div>
               </Drag>
-        ))}
+            ))}
           </DropChild>
         </Drop>
         <CreateTask kanbanId={kanban.id} />
       </TaskContainer>
     </Container>
   );
-})
+});
 const TaskTypeIcon = ({ id }: { id: number }) => {
   const { data: taskTypes } = useTasksType();
   const name = taskTypes?.find((taskType) => taskType.id === id)?.name;

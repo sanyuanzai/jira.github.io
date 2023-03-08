@@ -31,7 +31,7 @@ export const useTaskSearchParams = () => {
     [param, projectId, debouceName]
   );
 };
-export const useTaskQueryKey = () => ["tasks", useKanbanSearchParams()];
+export const useTaskQueryKey = () => ["tasks", useTaskSearchParams()];
 
 export const useTaskModal = () => {
   const [{ editingTaskId }, setEditingTaskId] = useUrlQueryParam([
