@@ -25,9 +25,10 @@ const ProjectScreen = memo(() => {
     </Container>
   );
 });
-const Container = styled.div`
+export const Container = styled.div`
   display: grid;
   grid-template-columns: 16rem 1fr;
+  width: 100%;
 `;
 const Aside = styled.aside`
   background-color: rgb(244, 245, 247);
