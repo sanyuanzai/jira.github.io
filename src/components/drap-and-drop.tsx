@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode } from 'react'
 import {
   Droppable,
   DroppableProps,
@@ -6,9 +6,9 @@ import {
   DroppableProvidedProps,
   DraggableProps,
   Draggable,
-} from "react-beautiful-dnd";
+} from 'react-beautiful-dnd'
 
-type DropProps = Omit<DroppableProps, "children"> & { children: ReactNode };
+type DropProps = Omit<DroppableProps, 'children'> & { children: ReactNode }
 export const Drop = ({ children, ...props }: DropProps) => {
   return (
     <Droppable {...props}>
@@ -18,28 +18,28 @@ export const Drop = ({ children, ...props }: DropProps) => {
             ...provided.droppableProps,
             ref: provided.innerRef,
             provided,
-          });
+          })
         }
-        return <div />;
+        return <div />
       }}
     </Droppable>
-  );
-};
+  )
+}
 
 type DropChildProps = Partial<{
-  provided: DroppableProvided & DroppableProvidedProps;
+  provided: DroppableProvided & DroppableProvidedProps
 }> &
-  React.HTMLAttributes<HTMLDivElement>;
+  React.HTMLAttributes<HTMLDivElement>
 export const DropChild = React.forwardRef<HTMLDivElement, DropChildProps>(
   ({ children, ...props }, ref) => (
-    <div ref={ref} style={{ flex: 1, minHeight: "5px" }}>
+    <div ref={ref} style={{ minHeight: '5px' }}>
       {children}
       {props.provided?.placeholder}
     </div>
   )
-);
+)
 
-type DragProps = Omit<DraggableProps, "children"> & { children: ReactNode };
+type DragProps = Omit<DraggableProps, 'children'> & { children: ReactNode }
 export const Drag = ({ children, ...props }: DragProps) => {
   return (
     <Draggable {...props}>
@@ -49,10 +49,10 @@ export const Drag = ({ children, ...props }: DragProps) => {
             ...provided.draggableProps,
             ...provided.dragHandleProps,
             ref: provided.innerRef,
-          });
+          })
         }
-        return <div />;
+        return <div />
       }}
     </Draggable>
-  );
-};
+  )
+}
