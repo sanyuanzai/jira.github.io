@@ -1,4 +1,4 @@
-impot React, { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Button, Drawer, Form, Input, Spin } from 'antd'
 import { DrawerProps } from 'antd/es/drawer'
 import styled from '@emotion/styled'
@@ -26,7 +26,7 @@ export const CreateEpic = (
 
   return (
     <Drawer
-      visible={props.visible}
+      open={props.visible}
       onClose={props.onClose}
       forceRender={true}
       destroyOnClose={true}

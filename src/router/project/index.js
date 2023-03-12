@@ -1,19 +1,20 @@
-import React from "react";
-import { Navigate } from "react-router-dom";
-const EpicScreen = React.lazy(() => import("screens/epic"));
-const KanbanScreen = React.lazy(() => import("screens/kanban"));
+import React from 'react'
+import { Navigate } from 'react-router-dom'
+import { EpicScreen } from 'screens/epic'
+
+const KanbanScreen = React.lazy(() => import('screens/kanban'))
 const routes = [
   {
-    path: "",
-    element: <Navigate to={"kanban"} replace={true} />,
+    path: '',
+    element: <Navigate to={'kanban'} replace={true} />,
   },
   {
-    path: "kanban",
+    path: 'kanban',
     element: <KanbanScreen />,
   },
   {
-    path: "epic",
+    path: 'epic',
     element: <EpicScreen />,
   },
-];
-export default routes;
+]
+export default routes
